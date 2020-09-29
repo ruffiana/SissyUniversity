@@ -1,15 +1,17 @@
 # -*- coding: utf-8 -*-
-
-from .context import sample
-
 import unittest
+
+try:
+    from .context import sissy_university
+except ImportError:
+    from context import sissy_university
 
 
 class AdvancedTestSuite(unittest.TestCase):
     """Advanced test cases."""
 
     def test_thoughts(self):
-        self.assertIsNone(sample.hmm())
+        self.assertIsNone(sissy_university.hmm())
 
 
 if __name__ == '__main__':

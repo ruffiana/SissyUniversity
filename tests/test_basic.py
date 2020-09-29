@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
-
-from .context import sample
-
 import unittest
+
+try:
+    from .context import sissy_university
+except ImportError:
+    from context import sissy_university
+
 
 
 class BasicTestSuite(unittest.TestCase):
