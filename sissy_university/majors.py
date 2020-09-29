@@ -117,5 +117,5 @@ if __name__ == "__main__":
     test = Majors()
     print(test)
 
-    test2 = test.get_by_property('id', 1)
-    print(test2.prerequisites)
+    # test2 = test.get_by_property('id', 1)
+    # print(test2.prerequisites)

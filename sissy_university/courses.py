@@ -124,5 +124,5 @@ if __name__ == "__main__":
     test = Courses()
     print(test)
 
-    test2 = test.get_by_property('id', 215)
-    print(test2.prerequisites)
+    # test2 = test.get_by_property('id', 215)
+    # print(test2.prerequisites)
