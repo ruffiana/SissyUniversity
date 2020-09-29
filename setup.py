@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Learn more: https://github.com/kennethreitz/setup.py
+# Learn more: https://github.com/ruffiana/SissyUniversity/setup.py
 
 from setuptools import setup, find_packages
 
@@ -12,13 +12,13 @@ with open('LICENSE') as f:
     license = f.read()
 
 setup(
-    name='sample',
+    name='sissy_university',
     version='0.1.0',
-    description='Sample package for Python-Guide.org',
+    description='Python interface and Discord bot for sissy-university',
     long_description=readme,
-    author='Kenneth Reitz',
-    author_email='me@kennethreitz.com',
-    url='https://github.com/kennethreitz/samplemod',
+    author='ruffiana',
+    author_email='ruffiana.plays@gmail.com',
+    url='https://github.com/ruffiana/SissyUniversity',
     license=license,
     packages=find_packages(exclude=('tests', 'docs'))
 )
