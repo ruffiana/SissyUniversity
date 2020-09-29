@@ -1,4 +1,4 @@
-from fuzzywuzzy import fuzz
+# from fuzzywuzzy import fuzz
 
 try:
     from .data_io import Json
@@ -32,9 +32,10 @@ class Collection(Json):
         self.base_class = base_class
         self.collection = self._load(local=local)
 
+
     def __str__(self):
-        _str = [f"[{_id}] - {obj.name}" for _id, obj in self.collection.items()]
-        return "\n".join(_str)
+        return "\n".join(self.as_list())
+
 
     def _load(self, local=True):
         if local:
@@ -42,6 +43,7 @@ class Collection(Json):
         else:
             # load from DB commands
             pass
+
 
     def _load_from_local(self):
         _dict = dict()
@@ -51,6 +53,7 @@ class Collection(Json):
             # the collection that they're a part of
             _dict[k] = self.base_class(self, **self.parse_dict(v))
         return _dict
+
 
     def get_by_property(self, _property, value):
         if isinstance(value, str):
@@ -69,3 +72,11 @@ class Collection(Json):
             # if fuzz.ratio(value, val2) > 75:
             #     return obj
         return None
+
+
+    def as_list(self):
+        _sorted = [
+            f"{self.collection[key].id} - {self.collection[key].name}"
+            for key in sorted(self.collection.keys(), key=int)
+            ]
+        return _sorted

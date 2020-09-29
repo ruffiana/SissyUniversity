@@ -14,15 +14,21 @@ from discord.ext import commands
 class Catalog(commands.Cog):
     """ Catalog cog for discord.py bot
     """
-    COLOR_DEF = discord.Colour.from_rgb(255, 127, 255)  # pink
+    COLOR_DEF = discord.Colour.from_rgb(240, 168, 192)
     URL_WEBSITE = "https://sissy-university.com/"
     URL_ICON = URL_WEBSITE + "img/logo.png"
     URL_IMAGE = URL_WEBSITE + "img/image{}.jpg"
     FOOTER = f"©2020 SISSY-UNIVERSITY.COM - ALL RIGHTS RESERVED."
+    
+    # PATH_BASE = Path(__file__).parent
+    # PATH_DATA = PATH_BASE.parent / "data"
+    # PATH_IMAGES = PATH_BASE.parent / "images"
     URL_IMAGE_TIERS = [
-        "https://cdn.discordapp.com/attachments/760278456982044732/760278572685590578/tier_1.png",
-        "https://cdn.discordapp.com/attachments/760278456982044732/760278576506470420/tier_2.png",
-        "https://cdn.discordapp.com/attachments/760278456982044732/760278580021297182/tier_3.png"
+        "https://media.discordapp.net/attachments/760278456982044732/760629153938276352/tier_1.png",
+        "https://media.discordapp.net/attachments/760278456982044732/760629157683003442/tier_2.png",
+        "https://media.discordapp.net/attachments/760278456982044732/760629161286696980/tier_3.png",
+        "https://media.discordapp.net/attachments/760278456982044732/760629164679495710/tier_4.png",
+        "https://media.discordapp.net/attachments/760278456982044732/760629622806675456/tier_5.png",
     ]
 
     def __init__(self, bot):
@@ -32,7 +38,7 @@ class Catalog(commands.Cog):
         self.bot = bot
 
 
-    def _create_embed(self, ctx, obj, user=None):
+    def _create_embed(self, ctx, obj):
         """
         Creates message/embed bundle for a challenge
         """
@@ -94,22 +100,30 @@ class Catalog(commands.Cog):
         return msg, embed
 
 
-    def _create_embed_list(self):
+    def _create_embed_list(self, ctx, data_type, data_collection):
         msg = ""
-
+        title = data_type.capitalize()
+        desc = f"Get information about a specific {data_type} by id or name:"
+        color = self.COLOR_DEF
         embed = discord.Embed(
-            title=obj.name,
-            description=obj.description,
-            color=self.COLOR_DEF
+            title=title,
+            description=desc,
+            color=color
             )
 
         # use author property to link back to sissy-university.com website
         embed.set_author(name="Sissy University", url=self.URL_WEBSITE, icon_url=self.URL_ICON)
 
-        # Add fields
-        # if hasattr(obj, "prerequisites") and obj.prerequisites:
-        #     _str = "\n".join([f"- {p.name}" for p in obj.prerequisites])
-        #     embed.add_field(name="Prerequisites:", value=_str, inline=False)
+        items = data_collection.as_list()
+        num_items = len(items)
+        if num_items < 25:
+            _str = "\n".join(items)
+            embed.add_field(name=f"ID - Name:", value=_str, inline=False)
+        else:
+            _str = "\n".join(items[:(num_items // 2 )])
+            embed.add_field(name=f"ID - Name:", value=_str, inline=True)
+            _str = "\n".join(items[(num_items // 2 + 1):])
+            embed.add_field(name=f"ID - Name:", value=_str, inline=True)
 
         # set footer
         embed.set_footer(text=self.FOOTER, icon_url=self.URL_ICON)
@@ -121,21 +135,24 @@ class Catalog(commands.Cog):
         data_collection = getattr(self.bot.data, data_type)
 
         if len(args) == 0:
-            _msg = f"To get information about a specific {data_type} you need to include the id or name."
-            return _msg, None
-
-        if len(args) == 1 and args[0].isdigit():
-            obj = data_collection.get_by_property('id', int(args[0]))
-        else:
+           return self._create_embed_list(ctx, data_type, data_collection)
+      
+        if len(args) > 1:
             value = " ".join(args)
             obj = data_collection.get_by_property(key_type, value)
 
+        # single arg should either be a digit as class id or possibly 'list'
+        if args[0].lower() == 'list':
+            return self._create_embed_list(ctx, obj)
+
+        if args[0].isdigit():
+            obj = data_collection.get_by_property('id', int(args[0]))
         if not obj:
             key = " ".join(args)
             _msg = f"Could not find a {data_type} that matches \"{key}\"."
             return _msg, None
         else:
-            return self._create_embed(ctx, obj, user=user_id)
+            return self._create_embed(ctx, obj)
 
 
     @commands.command(aliases=['maj', 'majors'])
