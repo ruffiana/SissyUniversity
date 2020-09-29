@@ -88,3 +88,10 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+# confidental local data and working files
+.vscode/
+wip/
+html/
+*.bak
+*.code-workspace
