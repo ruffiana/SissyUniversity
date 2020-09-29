@@ -1,2 +1,2 @@
-nose
-sphinx
+discord.py
+fuzzywuzzy
