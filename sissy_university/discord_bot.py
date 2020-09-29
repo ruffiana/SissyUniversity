@@ -61,7 +61,7 @@ class Bot(commands.Bot):
                 setattr(self, k, v)
 
         # remove build-in help command
-        # self.remove_command('help')
+        self.remove_command('help')
 
         self.data = data
 
