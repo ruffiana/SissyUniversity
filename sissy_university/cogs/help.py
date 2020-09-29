@@ -4,7 +4,7 @@ from discord.ext import commands
 
 
 class Custom_Help(commands.Cog):
-    COLOR_DEF = discord.Colour.from_rgb(255, 127, 255)  # pink
+    COLOR_DEF = discord.Colour.from_rgb(240, 168, 192)  # pink
     URL_WEBSITE = "https://sissy-university.com/"
     URL_ICON = URL_WEBSITE + "img/logo.png"
     URL_IMAGE = URL_WEBSITE + "img/image{}.jpg"
@@ -23,7 +23,7 @@ class Custom_Help(commands.Cog):
 
     def get_general_help(self):
         msg = ""
-        title = "Sissy-University Discord Bot Help"
+        title = "Sissy University Discord Bot Help"
         color = self.COLOR_DEF
         description = "All commands use '!' as a prefix.\nEx. `!club`"
         embed = discord.Embed(title=title, colour=color, description=description)
@@ -36,11 +36,11 @@ class Custom_Help(commands.Cog):
 
         # Add a field for each command
         fields = {
-            "club": "Command to get nformation about a club.",
-            "class": "Command to get nformation about a club.",
-            "major": "Command to get nformation about a major.",
-            "partner": "Command to get nformation about a parenter.",
-            "punishment": "Command to get nformation about a punishment.",
+            "club": "Get information about a club.\n```!club Stripping club```",
+            "class": "Get information about a club.\n```!club Fluids 101```",
+            "major": "Get nformation about a major.\n```!club Anal Technologies```",
+            "partner": "Get information about a parenter.\n```!partner Zoe```",
+            "punishment": "Get information about a punishment.\n```!club Chastity```",
         }
         for name, value in fields.items():
             embed.add_field(name=f"!{name}", value=value, inline=False)
