@@ -38,7 +38,7 @@ class Catalog(commands.Cog):
         self.bot = bot
 
 
-    def _create_embed(self, ctx, obj):
+    def _create_embed(self, ctx, obj, include_id=False):
         """
         Creates message/embed bundle for a challenge
         """
@@ -50,6 +50,8 @@ class Catalog(commands.Cog):
             title = f":lock: {obj.name}"
         else:
             title = obj.name
+        if include_id:
+            title = f"{title} {obj.id}"
 
         # get and parse description for special text formatters
         desc = obj.description
@@ -135,24 +137,28 @@ class Catalog(commands.Cog):
         data_collection = getattr(self.bot.data, data_type)
 
         if len(args) == 0:
+            _msg = f"`!{data_type}` command requires an id or name. (Use `!{data_type} list` to get a full list of {data_type}.)"
+            return _msg, None
+            
+        if len(args) == 1 and args[0].lower() == 'list':
            return self._create_embed_list(ctx, data_type, data_collection)
-      
-        if len(args) > 1:
+
+        # single arg should either be a digit as class id or possibly 'list'     
+        if len(args) == 1 and args[0].isdigit():
+            obj = data_collection.get_by_property('id', int(args[0]))
+        # multiple args are likely a class name
+        else:
             value = " ".join(args)
             obj = data_collection.get_by_property(key_type, value)
 
-        # single arg should either be a digit as class id or possibly 'list'
-        if args[0].lower() == 'list':
-            return self._create_embed_list(ctx, obj)
-
-        if args[0].isdigit():
-            obj = data_collection.get_by_property('id', int(args[0]))
         if not obj:
             key = " ".join(args)
-            _msg = f"Could not find a {data_type} that matches \"{key}\"."
+            _msg = f"Could not find any {data_type} that matches \"{key}\"."
             return _msg, None
+
         else:
-            return self._create_embed(ctx, obj)
+            include_id = data_type == 'courses'
+            return self._create_embed(ctx, obj, include_id=include_id)
 
 
     @commands.command(aliases=['maj', 'majors'])
