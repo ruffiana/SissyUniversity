@@ -21,7 +21,7 @@ class Custom_Help(commands.Cog):
         self.bot = bot
 
 
-    def get_general_help(self):
+    def _get_general_help(self):
         msg = ""
         title = "Sissy University Discord Bot Help"
         color = self.COLOR_DEF
@@ -37,10 +37,10 @@ class Custom_Help(commands.Cog):
         # Add a field for each command
         fields = {
             "club": "Get information about a club.\n```!club Stripping club```",
-            "class": "Get information about a club.\n```!club Fluids 101```",
-            "major": "Get nformation about a major.\n```!club Anal Technologies```",
+            "class": "Get information about a club.\n```!class Fluids 101```",
+            "major": "Get nformation about a major.\n```!major Anal Technologies```",
             "partner": "Get information about a parenter.\n```!partner Zoe```",
-            "punishment": "Get information about a punishment.\n```!club Chastity```",
+            "punishment": "Get information about a punishment.\n```!punishment Chastity```",
         }
         for name, value in fields.items():
             embed.add_field(name=f"!{name}", value=value, inline=False)
@@ -54,7 +54,7 @@ class Custom_Help(commands.Cog):
     @commands.command(aliases=["h"])
     async def help(self, ctx, *args):
         if not args:
-            msg, embed = self.get_general_help()
+            msg, embed = self._get_general_help()
         else:
             # embeds = {
             #     'club': self.get_help_modify,
