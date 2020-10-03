@@ -9,13 +9,13 @@ import discord
 from discord.ext import commands
 from dotenv import load_dotenv
 
-
 try: 
     from .const import PATH_CONFIG, PATH_COGS
-    from .model import Data
+    from .controller import Controller
 except ImportError:
     from const import PATH_CONFIG, PATH_COGS
-    from model import Data
+    from controller import Controller
+
 
 
 def config_load():
@@ -41,8 +41,8 @@ async def run():
     it's recommended that you create it here and pass it to the bot as a kwarg.
     """
     config = config_load()
-    data_model = Data()
-    bot = Bot(config, data_model)
+    controller = Controller()
+    bot = Bot(config, controller)
     try:
         await bot.start(config['token'])
     except KeyboardInterrupt:
@@ -50,7 +50,7 @@ async def run():
 
 
 class Bot(commands.Bot):
-    def __init__(self, config, data):
+    def __init__(self, config, controller):
         super().__init__(
             command_prefix=self.get_prefix_,
             description=config.get('description')
@@ -63,7 +63,7 @@ class Bot(commands.Bot):
         # remove build-in help command
         self.remove_command('help')
 
-        self.data = data
+        self.controller = controller
 
         self.start_time = None
         self.app_info = None
