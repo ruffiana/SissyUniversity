@@ -134,7 +134,7 @@ class Catalog(commands.Cog):
 
     def _get_data_and_create_view(self, ctx, data_type, *args, key_type="name"):
         user_id = str(ctx.message.author.id)
-        data_collection = getattr(self.bot.data, data_type)
+        data_collection = getattr(self.bot.controller, data_type)
 
         if len(args) == 0:
             _msg = f"`!{data_type}` command requires an id or name. (Use `!{data_type} list` to get a full list of {data_type}.)"
