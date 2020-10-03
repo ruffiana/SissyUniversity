@@ -1,13 +1,8 @@
 # from fuzzywuzzy import fuzz
 
-try:
-    from .data_io import Json
-except ImportError:
-    from data_io import Json
 
 
-
-class Collection(Json):
+class Collection():
     """
     Base class for collection of data objects
     
@@ -25,34 +20,14 @@ class Collection(Json):
         Ruffiana, ruffiana.plays@gmail.com, 9/28/2020
     """
 
-    def __init__(self, datafile, base_class, parent=None, local=True):
+    def __init__(self, parent, collection):
         super().__init__()
         self.parent = parent
-        self.datafile = datafile
-        self.base_class = base_class
-        self.collection = self._load(local=local)
+        self.collection = collection
 
 
     def __str__(self):
         return "\n".join(self.as_list())
-
-
-    def _load(self, local=True):
-        if local:
-            return self._load_from_local()
-        else:
-            # load from DB commands
-            pass
-
-
-    def _load_from_local(self):
-        _dict = dict()
-        _json = self.read_json(self.datafile)
-        for k, v in _json.items():
-            # passing self in as 'collection' arguement so objects can access
-            # the collection that they're a part of
-            _dict[k] = self.base_class(self, **self.parse_dict(v))
-        return _dict
 
 
     def get_by_property(self, _property, value):
@@ -76,7 +51,8 @@ class Collection(Json):
 
     def as_list(self):
         _sorted = [
-            f"{self.collection[key].id} - {self.collection[key].name}"
+            self.collection[key].as_list()
             for key in sorted(self.collection.keys(), key=int)
             ]
+                    
         return _sorted
