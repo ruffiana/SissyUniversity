@@ -38,6 +38,30 @@ class Catalog(commands.Cog):
         self.bot = bot
 
 
+    def _parse_text(self, txt):
+        """ Parse text and replace formatted sub-strings
+
+        Args:
+            txt (str): Text to parse
+
+        Returns:
+            str: Re-formatted string
+        """
+        match = re.search("(\d+)minutes", txt)
+        if match:
+            minutes = int(match.group(1))
+            hours, minutes = divmod(minutes, 60)
+
+            str_time = list()
+            if hours > 0:
+                str_time.append(f"{hours} hours")
+            if minutes > 0:
+                str_time.append(f"{minutes} minutes")
+                    
+            txt = re.sub("\d+minutes", " and ".join(str_time), txt)
+        return txt
+
+
     def _create_embed(self, ctx, obj, include_id=False):
         """
         Creates message/embed bundle for a challenge
@@ -82,11 +106,15 @@ class Catalog(commands.Cog):
             embed.add_field(name="Prerequisites:", value=_str, inline=False)
 
         if hasattr(obj, "daily1") and obj.daily1:
-            _str = f"- {obj.daily1}\n- {obj.daily2}"
+            daily1 = self._parse_text(obj.daily1)
+            daily2 = self._parse_text(obj.daily2)
+            _str = f"- {daily1}\n- {daily2}"
             embed.add_field(name="Daily Tasks:", value=_str, inline=False)
 
         if hasattr(obj, "exam1") and obj.exam1:
-            _str = f"- {obj.exam1}\n- {obj.exam2}"
+            exam1 = self._parse_text(obj.exam1)
+            exam2 = self._parse_text(obj.exam2)
+            _str = f"- {exam1}\n- {exam2}"
             embed.add_field(name="Exam Options:", value=_str, inline=False)
 
         if hasattr(obj, "perk1") and obj.perk1:
