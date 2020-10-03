@@ -254,6 +254,7 @@ class Student(SuSave):
         return self.data.get("view")
 
 
+
 if __name__ == "__main__":
     # filename = PATH_DATA / "save2020-09-25.suSave"
     # test = Student(filename)
@@ -262,4 +263,6 @@ if __name__ == "__main__":
     test2 = Student()
     print(test2)
 
+    from pprint import pprint
+    pprint(test2.__repr__())    
     # db = Postgress()
