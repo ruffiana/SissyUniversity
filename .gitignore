@@ -100,3 +100,4 @@ html/
 *.code-workspace
 *.susave
 *.psd
+scratchpad.py
